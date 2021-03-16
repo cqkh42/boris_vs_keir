@@ -38,3 +38,16 @@ def save_response_content(response, destination, chunk_size=32768):
     with destination.open('wb') as f:
         for chunk in chunks:
             f.write(chunk)
+            
+
+def main():
+    print('running download script')
+    if not DEFAULT_MODEL_LOCATION.exists():
+        print('downloading data')
+        download_file_from_google_drive()
+    else:
+        print('model exists')
+
+        
+if __name__ == '__main__':
+    main()

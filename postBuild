@@ -1,1 +1,2 @@
 jupyter serverextension enable --sys-prefix voila
+python3 -m download_data
