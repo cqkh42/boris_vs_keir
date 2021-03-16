@@ -9,7 +9,6 @@ DEFAULT_MODEL_ID = '1GLAmnK2DMRf9j1Fs2cnls-O9m3G-xj2Q'
 
 #taken from this StackOverflow answer: https://stackoverflow.com/a/39225039
 def download_file_from_google_drive(id=DEFAULT_MODEL_ID, destination=DEFAULT_MODEL_LOCATION):
-    destination.unlink(missing_ok=True)
     URL = "https://docs.google.com/uc?export=download"
 
     session = requests.Session()
