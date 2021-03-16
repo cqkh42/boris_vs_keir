@@ -1,1 +1,1 @@
-jupyter serverextension enable --sys-prefix voila
+# jupyter serverextension enable --sys-prefix voila
