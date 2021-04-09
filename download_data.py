@@ -4,44 +4,45 @@ from pathlib import Path
 
 import requests
 
-DEFAULT_MODEL_LOCATION = Path('model.pickle')
-DEFAULT_MODEL_ID = '1GLAmnK2DMRf9j1Fs2cnls-O9m3G-xj2Q'
+MODEL_PATH = Path('model.pickle')
+MODEL_ID = '1GLAmnK2DMRf9j1Fs2cnls-O9m3G-xj2Q'
 
-#taken from this StackOverflow answer: https://stackoverflow.com/a/39225039
-def download_file_from_google_drive(id=DEFAULT_MODEL_ID, destination=DEFAULT_MODEL_LOCATION):
-    URL = "https://docs.google.com/uc?export=download"
+
+# taken from this StackOverflow answer: https://stackoverflow.com/a/39225039
+def download_file_from_google_drive(file_id=MODEL_ID, destination=MODEL_PATH):
+    url = "https://docs.google.com/uc?export=download"
 
     session = requests.Session()
-    params = {'id': id}
+    params = {'id': file_id}
 
-    response = session.get(URL, params=params, stream=True)
-    token = get_confirm_token(response)
+    response = session.get(url, params=params, stream=True)
 
-    if token:
+    if token := get_confirm_token(response):
         params['confirm'] = token
-        response = session.get(URL, params=params, stream=True)
+        response = session.get(url, params=params, stream=True)
 
     save_response_content(response, destination)    
 
+    
 def get_confirm_token(response):
     for key, value in response.cookies.items():
         if key.startswith('download_warning'):
             return value
-
     return None
+
 
 def save_response_content(response, destination, chunk_size=32768):
     # filter out keep-alive new chunks
     chunks = (chunk for chunk in response.iter_content(chunk_size) if chunk)
 
-    with destination.open('wb') as f:
+    with destination.open('wb') as file:
         for chunk in chunks:
-            f.write(chunk)
+            file.write(chunk)
             
 
 def main():
     print('running download script')
-    if not DEFAULT_MODEL_LOCATION.exists():
+    if not MODEL_PATH.exists():
         print('downloading data')
         download_file_from_google_drive()
     else:
